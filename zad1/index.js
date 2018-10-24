@@ -28,21 +28,26 @@ function addItem(event){
     // id - item
     const input = document.getElementById("item").value;
     console.log(input);
-
+if(input!=""){
     // Sledeci korak je kreiranje novog li itema
 
     const li = document.createElement("li");
+    const option = document.createElement("option");
    
 
     // Nakon toga li itemu trebamo dodati klasu 
     // class - list-group-item
     li.className = "list-group-item";
-
+    option.className = "listIt";
+    option.value = input;
     // Nakon ovog trebamo da kreiramo text node
     // cija je vrijednost sacuvana u input polju
     // i da dodamo taj text node u li
     li.appendChild(document.createTextNode(input));
-
+    const Dlista = document.getElementById("dl");
+   // console.log(Dlista);
+   // console.log(document.getElementsByClassName("listIt"));
+    Dlista.appendChild(option);
     // Potrebno je da kreiramo i delete button element
 
     const deleteBtn = document.createElement("button");
@@ -62,6 +67,9 @@ function addItem(event){
     // novokreirani li u listu itema
     itemList.appendChild(li);
 }
+    document.getElementById("item").value = "";
+
+}
 
 // 2. Brisanje elemenata iz liste
 
@@ -77,7 +85,8 @@ function removeItem(event){
     // to mozemo da odradimo tako sto provjerimo da li
     // element koji smo kliknuli sadrzi klasu "delete"
     if(event.target.classList.contains("delete")){
-       // console.log("Kliknt X");
+        const listData = document.getElementsByClassName("listIt");
+        // console.log("Kliknt X");
         // ako sadrzi pozvati confirm sa porukom "Jeste li sigurni"
         // - radimo detaljnije nakon testa
         // confirm vrace true/false
@@ -88,11 +97,19 @@ function removeItem(event){
             // li je parent node elementa X, tj. targeta
             // parentElement
            const li = event.target.parentNode;
-
+           //var b = li.firstChild;
+           // console.log(JSON.stringify(b));
+           // console.log("Petar");
            // onda obrisemo selektovani li
             // iz parent noda, tj. lista itema (definisana globalno)
             // parent.removeChild(child)
+            var a = event.target.parentNode.innerText; // string je Item 1 i X na kraju moramo koristiti slice
 
+            for(let i =0;i<listData.length;i++){
+                if(listData[i].value===li.innerText.slice(0,-2)){
+                    listData[i].parentNode.removeChild(listData[i]);
+                }
+            }
             itemList.removeChild(li);
 
         }/*else{
@@ -154,9 +171,40 @@ function filterItems(event){
             item.style.display="none";
         }
 
-    })
-        
-
-        
-            
+    })        
 }
+function setCookie(cname,cvalue,exdays) {
+  var d = new Date();
+  d.setTime(d.getTime() + (exdays*24*60*60*1000));
+  var expires = "expires=" + d.toGMTString();
+  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function getCookie(cname) {
+  var name = cname + "=";
+  var decodedCookie = decodeURIComponent(document.cookie);
+  var ca = decodedCookie.split(';');
+  for(var i = 0; i < ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) == ' ') {
+          c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+          return c.substring(name.length, c.length);
+      }
+  }
+  return "";
+}
+
+function checkCookie() {
+  var user=getCookie("username");
+  if (user != "") {
+      alert("Welcome again " + user);
+  } else {
+     user = prompt("Please enter your name:","");
+     if (user != "" && user != null) {
+         setCookie("username", user, 30);
+     }
+  }
+}
+window.addEventListener("load", checkCookie);
