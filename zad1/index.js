@@ -1,5 +1,4 @@
 // 1. Dodavanje itema
-
 // Prvo nam treba forma u kojoj unosimo ime itema
 // id - addForm
 
@@ -68,14 +67,16 @@ if(input!=""){
     itemList.appendChild(li);
 }
     document.getElementById("item").value = "";
-
+    saveList();
 }
 
 // 2. Brisanje elemenata iz liste
 
 // Na item list dodamo click event i event handler za brisanje itema
 // U prvom koraku smo nasli item list !
-itemList.addEventListener("click" , removeItem);
+itemList.addEventListener("click" , function(e){
+    removeItem(e);
+});
 
 
 // Sada trebamo da kreiramo event handler za brisanje itema
@@ -116,7 +117,7 @@ function removeItem(event){
             console.log("Nijesam");
         }*/
     }
-
+    saveList();
 }
 
 // 3. Filtriranje/pretraga elemenata
@@ -173,38 +174,25 @@ function filterItems(event){
 
     })        
 }
-function setCookie(cname,cvalue,exdays) {
-  var d = new Date();
-  d.setTime(d.getTime() + (exdays*24*60*60*1000));
-  var expires = "expires=" + d.toGMTString();
-  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+//cuvanje stranice za korisnika
+function saveList(){
+    var inputLista = document.getElementById("items").innerHTML;
+    var dataLista = document.getElementById("dl").innerHTML;
+
+    var liste1={
+        inpL:inputLista,
+        datL:dataLista
+    }
+    var listee=[];
+    listee.push(liste1);
+    localStorage.setItem('listee', JSON.stringify(listee));
 }
 
-function getCookie(cname) {
-  var name = cname + "=";
-  var decodedCookie = decodeURIComponent(document.cookie);
-  var ca = decodedCookie.split(';');
-  for(var i = 0; i < ca.length; i++) {
-      var c = ca[i];
-      while (c.charAt(0) == ' ') {
-          c = c.substring(1);
-      }
-      if (c.indexOf(name) == 0) {
-          return c.substring(name.length, c.length);
-      }
-  }
-  return "";
+function pokreniListu(){
+    var listeee = JSON.parse(localStorage.getItem('listee'))
+    if(listeee[0]!=null){
+    document.getElementById("items").innerHTML = listeee[0].inpL;
+    document.getElementById("dl").innerHTML = listeee[0].datL;
+    }
 }
-
-function checkCookie() {
-  var user=getCookie("username");
-  if (user != "") {
-      alert("Welcome again " + user);
-  } else {
-     user = prompt("Please enter your name:","");
-     if (user != "" && user != null) {
-         setCookie("username", user, 30);
-     }
-  }
-}
-window.addEventListener("load", checkCookie);
+window.addEventListener("load",pokreniListu);
