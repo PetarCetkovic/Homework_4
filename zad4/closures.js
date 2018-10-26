@@ -119,4 +119,4 @@ function delay(func, wait) {
     setTimeout(func,wait);
 }
 var a = function(){console.log("Petar");};
-delay(fun,4000);
+delay(a,4000);

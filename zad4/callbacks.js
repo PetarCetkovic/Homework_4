@@ -71,52 +71,84 @@ function reduce(array, callback, initialValue) {
      });
      return result;
 }
-var niz = [1,2,3,4];
-niz.in
+var niz = [1,2,3,4,5];
 var pomnozi = function(a,b){return a*b};
 console.log(reduce(niz,pomnozi,1));
+var nums = [4, 1, 3];
+var add = function(a, b) { return a + b; }
+console.log(reduce(nums, add, 0));
+
 
 //Extension 3
 function intersection(arrays) {
-    var presjek = function(arrays){
-        var novi = [];
-        forEach(arrays, function(e){
-            if(arrays.includes(e)){
-                novi.push(e);
+    var prvi = arrays[0];
+    var novi = [];
+    var c;
+    //ispitujem svaki clan od prvog da li
+    for(let i=0;i<prvi.length;i++){
+        c = 0;
+        for(let j =1;j<arrays.length;j++){
+            if(arrays[j].includes(prvi[i])){
+                c++; 
             }
-        })
-        return novi;
+            if(c===(arrays.length-1)){
+                novi.push(prvi[i]);
+            }
+        }
     }
-
-    return reduce(arrays,presjek,arrays[0]);
+    return novi;
     
 }
 
- console.log(intersection([5,11, 10, 15, 20], [15, 88, 1, 5, 7], [1, 10, 15, 5, 20]));
+ console.log(intersection([[5,11, 10, 15, 20], [15, 88, 1, 5, 7], [1, 10, 15, 5, 20]]));
 // should log: [5, 15]
-
+var niz = [1,2,3,4,5];
+console.log(niz.includes(2));
 //Extension 4
+
 function union(arrays) {
+    var  novi = arrays[0];
+    for (let i = 1; i < arrays.length; i++){
+      for (let j = 0; j< arrays[i].length; j++){
+          if (!novi.includes(arrays[i][j])){
+            novi.push(arrays[i][j]);
+          }
+      }
+    }
+    return novi;
 
 }
 
 
-// console.log(union([5, 10, 15], [15, 88, 1, 5, 7], [100, 15, 10, 1, 5]));
+console.log(union([[5, 10, 15], [15, 88, 1, 5, 7], [100, 15, 10, 1, 5]]));
 // should log: [5, 10, 15, 88, 1, 7, 100]
 
 //Extension 5
 function objOfMatches(array1, array2, callback) {
-
+    var o = {};
+    for(let i = 0; i<array1.length; i++){
+        if(callback(array1[i])===array2[i]){
+            o[array1[i]]=array2[i];
+        }
+    }
+    return o;
 }
 
-// console.log(objOfMatches(['hi', 'howdy', 'bye', 'later', 'hello'], ['HI', 'Howdy', 'BYE', 'LATER', 'hello'], function(str) { return str.toUpperCase(); }));
+console.log(objOfMatches(['hi', 'howdy', 'bye', 'later', 'hello'], ['HI', 'Howdy', 'BYE', 'LATER', 'hello'], function(str) { return str.toUpperCase(); }));
 // should log: { hi: 'HI', bye: 'BYE', later: 'LATER' }
 
 //Extension 6
 function multiMap(arrVals, arrCallbacks) {
-
+    var o = {};
+    for (let i = 0; i<arrVals.length; i++){
+        o[arrVals[i]]=[];
+        for (let j = 0; j<arrCallbacks.length; j++){
+            (o[arrVals[i]])[j]=arrCallbacks[j](arrVals[i]);
+        }
+    }
+    return o;
 }
 
-// console.log(multiMap(['catfood', 'glue', 'beer'], [function(str) { return str.toUpperCase(); }, function(str) { return str[0].toUpperCase() + str.slice(1).toLowerCase(); }, function(str) { return str + str; }]));
+ console.log(multiMap(['catfood', 'glue', 'beer'], [function(str) { return str.toUpperCase(); }, function(str) { return str[0].toUpperCase() + str.slice(1).toLowerCase(); }, function(str) { return str + str; }]));
 // should log: { catfood: ['CATFOOD', 'Catfood', 'catfoodcatfood'], glue: ['GLUE', 'Glue', 'glueglue'], beer: ['BEER', 'Beer', 'beerbeer'] }
 
