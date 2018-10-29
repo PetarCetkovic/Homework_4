@@ -27,7 +27,7 @@ function addItem(event){
     // id - item
     const input = document.getElementById("item").value;
     console.log(input);
-if(input!=""){
+if(input!="" && vecPostoji(input)){
     // Sledeci korak je kreiranje novog li itema
 
     const li = document.createElement("li");
@@ -78,7 +78,16 @@ itemList.addEventListener("click" , function(e){
     removeItem(e);
 });
 
-
+function vecPostoji(str){
+    var c = document.getElementsByClassName("list-group-item");
+    for(let i=0;i<c.length;i++){
+        if(str===c[i].innerText.slice(0,-2)){
+            alert("Vec postoji isti element");
+            return false;
+        }
+    }
+    return true;
+}
 // Sada trebamo da kreiramo event handler za brisanje itema
 function removeItem(event){
     
@@ -185,6 +194,7 @@ function saveList(){
     }
     var listee=[];
     listee.push(liste1);
+    localStorage.clear();
     localStorage.setItem('listee', JSON.stringify(listee));
 }
 
@@ -195,4 +205,5 @@ function pokreniListu(){
     document.getElementById("dl").innerHTML = listeee[0].datL;
     }
 }
+//window.addEventListener("load",saveList);
 window.addEventListener("load",pokreniListu);
