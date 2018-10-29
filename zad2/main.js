@@ -19,8 +19,7 @@ var igra= document.getElementById("igra")
 igra.addEventListener("click",function(e){
     var sadrzaj = document.getElementById(e.target.id);
     if(sadrzaj.textContent===""){
-            
-			setTimeout(function(){sadrzaj.textContent = igracNaRedu},0);
+            sadrzaj.textContent = igracNaRedu;
             
             counter++;
             if(igracNaRedu==="X"){
@@ -33,11 +32,11 @@ igra.addEventListener("click",function(e){
             }
         }
         if(pobjeda("X")){
-		setTimeout(alert("Igrac X je pobijedio"), 1000);
+            alert("Igrac X je pobijedio");
             igracNaRedu="";
         }
         else if(pobjeda("O")){
-		setTimeout(alert("Igrac O je pobijedio"), 1000);
+            alert("Igrac O je pobijedio");
             igracNaRedu="";
         }
         else if(counter>=9 && !pobjeda("X") && !pobjeda("O")){
